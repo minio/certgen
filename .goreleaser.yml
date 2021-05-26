@@ -7,6 +7,7 @@ builds:
       - darwin
       - linux
       - freebsd
+      - windows
 
     goarch:
       - amd64
@@ -24,13 +25,19 @@ builds:
     env:
       - CGO_ENABLED=0
 
-checksum:
-  name_template: 'checksums.txt'
-snapshot:
-  name_template: "{{ .Tag }}-next"
+archives:
+  -
+    name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+    format: binary
+    replacements:
+      arm: arm
+
 changelog:
   sort: asc
-  filters:
-    exclude:
-    - '^docs:'
-    - '^test:'
+
+nfpms:
+  -
+    homepage: https://github.com/minio/certgen
+    formats:
+      - deb
+      - rpm
