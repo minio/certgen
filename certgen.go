@@ -148,7 +148,7 @@ func main() {
 	}
 	log.Println("wrote public.crt")
 
-	keyOut, err := os.OpenFile("private.key", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+	keyOut, err := os.OpenFile("private.key", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o600)
 	if err != nil {
 		log.Fatalf("Failed to open private.key for writing: %v", err)
 		return
