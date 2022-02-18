@@ -1,3 +1,5 @@
 dist/
 certgen
 *~
+public.crt
+private.key
