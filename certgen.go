@@ -12,7 +12,6 @@ import (
 	"crypto/ed25519"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/rsa"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
@@ -29,19 +28,16 @@ var version = "(dev)"
 
 var (
 	host       = flag.String("host", "", "Comma-separated hostnames and IPs to generate a certificate for")
+	ecdsaCurve = flag.String("ecdsa-curve", "", "ECDSA curve to use to generate a key. Valid values are P224, P256 (recommended), P384, P521")
+	ed25519Key = flag.Bool("ed25519", true, "Generate an Ed25519 key")
+	orgName    = flag.String("org-name", "Acme Co", "Organization name used when generating the certs")
+	isNoCA     = flag.Bool("no-ca", false, "whether this cert should not be its own Certificate Authority")
 	validFrom  = flag.String("start-date", "", "Creation date formatted as Jan 1 15:04:05 2011")
 	validFor   = flag.Duration("duration", 365*24*time.Hour, "Duration that certificate is valid for")
-	isCA       = flag.Bool("ca", false, "whether this cert should be its own Certificate Authority")
-	rsaBits    = flag.Int("rsa-bits", 2048, "Size of RSA key to generate. Ignored if --ecdsa-curve is set")
-	ecdsaCurve = flag.String("ecdsa-curve", "", "ECDSA curve to use to generate a key. Valid values are P224, P256 (recommended), P384, P521")
-	ed25519Key = flag.Bool("ed25519", false, "Generate an Ed25519 key")
-	orgName    = flag.String("org-name", "Acme Co", "Organization name used when generating the certs")
 )
 
 func publicKey(priv interface{}) interface{} {
 	switch k := priv.(type) {
-	case *rsa.PrivateKey:
-		return &k.PublicKey
 	case *ecdsa.PrivateKey:
 		return &k.PublicKey
 	case ed25519.PrivateKey:
@@ -64,8 +60,6 @@ func main() {
 	case "":
 		if *ed25519Key {
 			_, priv, err = ed25519.GenerateKey(rand.Reader)
-		} else {
-			priv, err = rsa.GenerateKey(rand.Reader, *rsaBits)
 		}
 	case "P224":
 		priv, err = ecdsa.GenerateKey(elliptic.P224(), rand.Reader)
@@ -82,15 +76,9 @@ func main() {
 		log.Fatalf("Failed to generate private key: %v", err)
 	}
 
-	// ECDSA, ED25519 and RSA subject keys should have the DigitalSignature
+	// ECDSA, ED25519 subject keys should have the DigitalSignature
 	// KeyUsage bits set in the x509.Certificate template
 	keyUsage := x509.KeyUsageDigitalSignature
-	// Only RSA subject keys should have the KeyEncipherment KeyUsage bits set. In
-	// the context of TLS this KeyUsage is particular to RSA key exchange and
-	// authentication.
-	if _, isRSA := priv.(*rsa.PrivateKey); isRSA {
-		keyUsage |= x509.KeyUsageKeyEncipherment
-	}
 
 	var notBefore time.Time
 	if len(*validFrom) == 0 {
@@ -125,6 +113,7 @@ func main() {
 
 	hosts := strings.Split(*host, ",")
 	for _, h := range hosts {
+		h = strings.TrimSpace(h)
 		if ip := net.ParseIP(h); ip != nil {
 			template.IPAddresses = append(template.IPAddresses, ip)
 		} else {
@@ -132,12 +121,17 @@ func main() {
 		}
 	}
 
-	if *isCA {
+	if !*isNoCA {
 		template.IsCA = true
 		template.KeyUsage |= x509.KeyUsageCertSign
 	}
 
-	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, publicKey(priv), priv)
+	pkey := publicKey(priv)
+	if pkey == nil {
+		log.Fatalln("Failed to create certificate: publicKey is nil")
+	}
+
+	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, pkey, priv)
 	if err != nil {
 		log.Fatalf("Failed to create certificate: %v", err)
 	}
