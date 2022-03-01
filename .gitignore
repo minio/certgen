@@ -3,3 +3,5 @@ certgen
 *~
 public.crt
 private.key
+client.crt
+client.key
