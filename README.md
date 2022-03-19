@@ -4,6 +4,23 @@
 
 ## Install
 
+## Install
+
+<details open="true"><summary><b><a name="binary-releases">Binary Releases</a></b></summary>
+
+| OS       | ARCH    | Binary                                                                                               |
+|:--------:|:-------:|:----------------------------------------------------------------------------------------------------:|
+| Linux    | amd64   | [linux-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-linux-amd64)         |
+| Linux    | arm64   | [linux-arm64](https://github.com/minio/certgen/releases/latest/download/certgen-linux-arm64)         |
+| Linux    | ppc64le | [linux-ppc64le](https://github.com/minio/certgen/releases/latest/download/certgen-linux-ppc64le)     |
+| Linux    | s390x   | [linux-s390x](https://github.com/minio/certgen/releases/latest/download/certgen-linux-s390x)         |
+| Apple M1 | arm64   | [darwin-arm64](https://github.com/minio/certgen/releases/latest/download/certgen-darwin-arm64)       |
+| Apple    | amd64   | [darwin-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-darwin-amd64)       |
+| Windows  | amd64   | [windows-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-windows-amd64.exe) |
+| Windows  | arm64   | [windows-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-windows-arm64.exe) |
+| FreeBSD  | amd64   | [freebsd-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-freebsd-amd64)     |
+| FreeBSD  | arm64   | [freebsd-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-freebsd-arm64)     |
+
 Download [`certgen`](https://github.com/minio/certgen/releases/latest) for your specific operating system and platform.
 
 ## Example (server)
