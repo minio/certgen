@@ -9,10 +9,11 @@ Download [`certgen`](https://github.com/minio/certgen/releases/latest) for your 
 ## Example (server)
 
 ```sh
-certgen -ca -host "10.10.0.3,10.10.0.4,10.10.0.5"
+certgen -host "127.0.0.1,localhost"
 
-2020/11/21 10:16:18 wrote public.crt
-2020/11/21 10:16:18 wrote private.key
+Created a new certificate 'public.crt', 'private.key' valid for the following names 📜
+ - "127.0.0.1"
+ - "localhost"
 ```
 
 ## Example (client)
@@ -20,6 +21,6 @@ certgen -ca -host "10.10.0.3,10.10.0.4,10.10.0.5"
 ```sh
 certgen -client -host "localhost"
 
-2022/02/28 16:55:37 wrote client.crt
-2022/02/28 16:55:37 wrote client.key
+Created a new certificate 'client.crt', 'client.key' valid for the following names 📜
+ - "localhost"
 ```
