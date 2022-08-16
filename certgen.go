@@ -36,6 +36,7 @@ var (
 	ecdsaCurve = flag.String("ecdsa-curve", "P256", "ECDSA curve to use to generate a key. Valid values are P224, P256 (recommended), P384, P521")
 	ed25519Key = flag.Bool("ed25519", false, "Generate an Ed25519 key")
 	orgName    = flag.String("org-name", "Certgen Development", "Organization name used when generating the certs")
+	commonName = flag.String("common-name", "", "Common name for client cert")
 	isNoCA     = flag.Bool("no-ca", false, "whether this cert should not be its own Certificate Authority")
 	isClient   = flag.Bool("client", false, "whether this cert is a client certificate")
 	validFrom  = flag.String("start-date", "", "Creation date formatted as Jan 1 15:04:05 2011")
@@ -130,6 +131,12 @@ func main() {
 
 		KeyUsage:              keyUsage,
 		BasicConstraintsValid: true,
+	}
+
+	if *isClient {
+		if *commonName != "" {
+			template.Subject.CommonName = *commonName
+		}
 	}
 
 	hosts := strings.Split(*host, ",")
