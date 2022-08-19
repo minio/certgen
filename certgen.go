@@ -37,6 +37,7 @@ var (
 	ed25519Key = flag.Bool("ed25519", false, "Generate an Ed25519 key")
 	orgName    = flag.String("org-name", "Certgen Development", "Organization name used when generating the certs")
 	commonName = flag.String("common-name", "", "Common name for client cert")
+	ouName     = flag.String("ou-name", "", "Organizational unit name for cert. Defaults to username@hostname")
 	isNoCA     = flag.Bool("no-ca", false, "whether this cert should not be its own Certificate Authority")
 	isClient   = flag.Bool("client", false, "whether this cert is a client certificate")
 	validFrom  = flag.String("start-date", "", "Creation date formatted as Jan 1 15:04:05 2011")
@@ -54,18 +55,22 @@ func publicKey(priv interface{}) interface{} {
 	}
 }
 
-var userAndHostname string
+var organizationalUnit string
 
 func init() {
-	u, err := user.Current()
-	if err == nil {
-		userAndHostname = u.Username + "@"
-	}
-	if h, err := os.Hostname(); err == nil {
-		userAndHostname += h
-	}
-	if err == nil && u.Name != "" && u.Name != u.Username {
-		userAndHostname += " (" + u.Name + ")"
+	if *ouName == "" {
+		u, err := user.Current()
+		if err == nil {
+			organizationalUnit = u.Username + "@"
+		}
+		if h, err := os.Hostname(); err == nil {
+			organizationalUnit += h
+		}
+		if err == nil && u.Name != "" && u.Name != u.Username {
+			organizationalUnit += " (" + u.Name + ")"
+		}
+	} else {
+		organizationalUnit = *ouName
 	}
 }
 
@@ -124,7 +129,7 @@ func main() {
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
 			Organization:       []string{*orgName},
-			OrganizationalUnit: []string{userAndHostname},
+			OrganizationalUnit: []string{organizationalUnit},
 		},
 		NotBefore: notBefore,
 		NotAfter:  notAfter,
