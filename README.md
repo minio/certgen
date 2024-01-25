@@ -4,8 +4,6 @@
 
 ## Install
 
-## Install
-
 <details open="true"><summary><b><a name="binary-releases">Binary Releases</a></b></summary>
 
 | OS       | ARCH    | Binary                                                                                               |
