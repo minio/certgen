@@ -1,6 +1,7 @@
 before:
   hooks:
-    - go mod tidy -compat=1.17
+    - go mod tidy -compat=1.21
+
 builds:
   -
     goos:
@@ -29,14 +30,13 @@ archives:
   -
     name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
     format: binary
-    replacements:
-      arm: arm
 
 changelog:
   sort: asc
 
 nfpms:
   -
+    maintainer: "MinIO Developers <dev@min.io>"
     homepage: https://github.com/minio/certgen
     formats:
       - deb
