@@ -15,9 +15,9 @@
 | Apple M1 | arm64   | [darwin-arm64](https://github.com/minio/certgen/releases/latest/download/certgen-darwin-arm64)       |
 | Apple    | amd64   | [darwin-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-darwin-amd64)       |
 | Windows  | amd64   | [windows-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-windows-amd64.exe) |
-| Windows  | arm64   | [windows-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-windows-arm64.exe) |
+| Windows  | arm64   | [windows-arm64](https://github.com/minio/certgen/releases/latest/download/certgen-windows-arm64.exe) |
 | FreeBSD  | amd64   | [freebsd-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-freebsd-amd64)     |
-| FreeBSD  | arm64   | [freebsd-amd64](https://github.com/minio/certgen/releases/latest/download/certgen-freebsd-arm64)     |
+| FreeBSD  | arm64   | [freebsd-arm64](https://github.com/minio/certgen/releases/latest/download/certgen-freebsd-arm64)     |
 
 Download [`certgen`](https://github.com/minio/certgen/releases/latest) for your specific operating system and platform.
 
