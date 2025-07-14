@@ -1,6 +1,8 @@
+version: 2
+
 before:
   hooks:
-    - go mod tidy -compat=1.21
+    - go mod tidy -compat=1.24
 
 builds:
   -
