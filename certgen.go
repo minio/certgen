@@ -55,9 +55,10 @@ func publicKey(priv interface{}) interface{} {
 	}
 }
 
-var organizationalUnit string
+func main() {
+	flag.Parse()
 
-func init() {
+	var organizationalUnit string
 	if *ouName == "" {
 		u, err := user.Current()
 		if err == nil {
@@ -72,10 +73,6 @@ func init() {
 	} else {
 		organizationalUnit = *ouName
 	}
-}
-
-func main() {
-	flag.Parse()
 
 	if len(*host) == 0 {
 		log.Fatalf("Missing required --host parameter")
